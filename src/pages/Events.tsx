@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Search, Filter, Calendar, ChevronRight, MapPin } from 'lucide-react';
 import Navbar from '../components/Navbar';
@@ -7,12 +6,10 @@ import Newsletter from '../components/Newsletter';
 import EventCard from '../components/EventCard';
 
 const Events = () => {
-  // State for events and filters
   const [searchTerm, setSearchTerm] = useState("");
   const [monthFilter, setMonthFilter] = useState("");
   const [filteredEvents, setFilteredEvents] = useState<any[]>([]);
 
-  // Sample event data
   const events = [
     {
       id: '1',
@@ -82,10 +79,8 @@ const Events = () => {
     }
   ];
 
-  // Get unique months for filtering
   const months = [...new Set(events.map(event => event.month))];
 
-  // Filter events based on search and month filter
   useEffect(() => {
     let results = events;
     
@@ -103,30 +98,34 @@ const Events = () => {
     setFilteredEvents(results);
   }, [searchTerm, monthFilter]);
 
-  // Reset all filters
   const resetFilters = () => {
     setSearchTerm("");
     setMonthFilter("");
   };
 
-  // Featured event (first one marked as featured)
   const featuredEvent = events.find(event => event.featured);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Page Header */}
-      <div className="pt-24 pb-12 divine-gradient">
-        <div className="container-custom text-center">
+      <div className="pt-24 pb-12 relative">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1531058020387-3be344556be6" 
+            alt="Events header background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+        <div className="container-custom text-center relative z-10">
           <h1 className="text-white mb-4">Events</h1>
-          <p className="text-white/90 max-w-2xl mx-auto text-lg">
-            Join us for upcoming services, conferences, and gatherings
+          <p className="text-white/90 max-w-2xl mx-auto">
+            Join us for our upcoming events and be part of our community
           </p>
         </div>
       </div>
       
-      {/* Featured Event */}
       {featuredEvent && (
         <section className="py-12 bg-divine-light">
           <div className="container-custom">
@@ -185,10 +184,8 @@ const Events = () => {
         </section>
       )}
       
-      {/* Events Collection */}
       <section className="section-padding bg-white">
         <div className="container-custom">
-          {/* Search and Filters */}
           <div className="mb-8 bg-gray-50 p-6 rounded-lg">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
@@ -224,7 +221,6 @@ const Events = () => {
             </div>
           </div>
           
-          {/* Events Grid */}
           <div>
             <div className="mb-6">
               <h2 className="text-2xl font-semibold text-divine">Upcoming Events</h2>
@@ -256,7 +252,6 @@ const Events = () => {
         </div>
       </section>
       
-      {/* Host Your Event */}
       <section className="py-16 divine-light-gradient">
         <div className="container-custom">
           <div className="bg-white rounded-lg shadow-lg p-8 md:p-12">
@@ -291,10 +286,8 @@ const Events = () => {
         </div>
       </section>
       
-      {/* Newsletter Section */}
       <Newsletter />
       
-      {/* Footer */}
       <Footer />
     </div>
   );

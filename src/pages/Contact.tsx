@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, MessageSquare, Clock, Facebook, Youtube, Instagram, Twitter } from 'lucide-react';
 import Navbar from '../components/Navbar';
@@ -50,12 +49,20 @@ const Contact = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Page Header */}
-      <div className="pt-24 pb-12 divine-gradient">
-        <div className="container-custom text-center">
+      {/* Page Header with Background Image */}
+      <div className="pt-24 pb-12 relative">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1533458773521-e9f381ede0a8" 
+            alt="Contact header background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+        <div className="container-custom text-center relative z-10">
           <h1 className="text-white mb-4">Contact Us</h1>
-          <p className="text-white/90 max-w-2xl mx-auto text-lg">
-            We'd love to hear from you. Get in touch with our ministry team
+          <p className="text-white/90 max-w-2xl mx-auto">
+            We'd love to hear from you. Reach out to us with any questions or prayer requests.
           </p>
         </div>
       </div>

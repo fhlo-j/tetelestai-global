@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
   ChevronRight,
@@ -22,12 +22,124 @@ import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import AnnouncementModal from "../components/AnnouncementModal";
 
+// Reusable Animated Section Component
+const AnimatedSection = ({ children, className = "" }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={{
+        hidden: { opacity: 0, y: 30 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.6,
+            ease: "easeOut",
+          },
+        },
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// Animated Header Component
+const AnimatedHeader = ({ children, className = "" }) => (
+  <motion.div
+    className={`inline-block relative ${className}`}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, margin: "-50px" }}
+    variants={{
+      hidden: { opacity: 0, y: 20 },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          duration: 0.6,
+          ease: "easeOut",
+        },
+      },
+    }}
+  >
+    <h2 className="text-divine mb-4 inline-block">{children}</h2>
+    <motion.div
+      initial={{ scaleX: 0 }}
+      whileInView={{ scaleX: 1 }}
+      viewport={{ once: true }}
+      transition={{
+        duration: 0.8,
+        delay: 0.3,
+        ease: "easeOut",
+      }}
+      className="absolute bottom-0 left-0 w-full h-1 bg-gold origin-left"
+      style={{ transformOrigin: "left" }}
+    />
+  </motion.div>
+);
+
+// Animated Button Component
+const AnimatedButton = ({ children, className = "", ...props }) => (
+  <motion.button
+    whileHover={{ scale: 1.03 }}
+    whileTap={{ scale: 0.98 }}
+    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+    className={className}
+    {...props}
+  >
+    {children}
+  </motion.button>
+);
+
 const Index = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setLoaded(true);
   }, []);
+
+  // Animation variants with compatible easing
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const cardAnimation = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
 
   // Sample data
   const featuredSermons = [
@@ -110,28 +222,6 @@ const Index = () => {
     },
   ];
 
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-      },
-    },
-  };
-
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  // Ministry data
   const ministries = [
     {
       icon: Church,
@@ -163,7 +253,6 @@ const Index = () => {
     },
   ];
 
-  // Open Google Maps location
   const openGoogleMaps = () => {
     window.open(
       "https://maps.google.com/?q=123+Faith+Avenue,+City+Center",
@@ -176,13 +265,21 @@ const Index = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <Hero />
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={loaded ? { opacity: 1, y: 0 } : {}}
+        transition={{
+          duration: 1,
+          ease: "easeOut",
+        }}
+      >
+        <Hero />
+      </motion.div>
 
-      {/* Announcement Modal */}
       <AnnouncementModal />
 
       {/* Welcome Section */}
-      <section className="section-padding bg-white">
+      <AnimatedSection className="section-padding bg-white">
         <div className="container-custom">
           <motion.div
             className="grid md:grid-cols-2 gap-8 items-center"
@@ -191,9 +288,9 @@ const Index = () => {
             variants={staggerContainer}
           >
             <motion.div variants={fadeIn}>
-              <h2 className="text-divine mb-4">
+              <AnimatedHeader>
                 Welcome to <span className="text-gold">Tetelestai</span> Global
-              </h2>
+              </AnimatedHeader>
               <p className="text-gray-700 mb-6">
                 Tetelestai Global is a spirit-filled ministry dedicated to
                 spreading the gospel of Jesus Christ. Our mission is to empower
@@ -206,17 +303,24 @@ const Index = () => {
                 God's redemptive work. We carry this powerful message of
                 salvation, healing, and deliverance to the nations.
               </p>
-              <Link
+              <AnimatedButton
+                as={Link}
                 to="/about"
                 className="btn-primary inline-flex items-center gap-2"
               >
                 Learn More About Us
                 <ChevronRight size={18} />
-              </Link>
+              </AnimatedButton>
             </motion.div>
 
             <motion.div
               variants={fadeIn}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={loaded ? { opacity: 1, scale: 1 } : {}}
+              transition={{
+                duration: 0.8,
+                ease: "easeOut",
+              }}
               className="relative rounded-lg overflow-hidden shadow-xl"
             >
               <img
@@ -232,27 +336,52 @@ const Index = () => {
             </motion.div>
           </motion.div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Key Ministries Section */}
-      <section className="section-padding bg-gray-50">
+      <AnimatedSection className="section-padding bg-gray-50">
         <div className="container-custom">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-divine mb-4">Our Key Ministries</h2>
-            <p className="text-gray-700">
+            <AnimatedHeader className="text-center">
+              Our Key Ministries
+            </AnimatedHeader>
+            <motion.p
+              className="text-gray-700"
+              initial={{ opacity: 0 }}
+              animate={loaded ? { opacity: 1 } : {}}
+              transition={{ delay: 0.3 }}
+            >
               Tetelestai Global serves through various ministry arms, each
               dedicated to a specific area of spiritual growth and community
               impact.
-            </p>
+            </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            initial="hidden"
+            animate={loaded ? "visible" : "hidden"}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.1,
+                },
+              },
+            }}
+          >
             {ministries.map((ministry, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all group overflow-hidden"
+                className="bg-white rounded-lg shadow-md overflow-hidden group"
+                variants={cardAnimation}
+                whileHover={{ y: -10 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
-                <div className="h-48 overflow-hidden relative">
+                <motion.div
+                  className="h-48 overflow-hidden relative"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.4 }}
+                >
                   <img
                     src={ministry.image}
                     alt={ministry.title}
@@ -260,15 +389,18 @@ const Index = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                     <div className="p-4">
-                      <div className="inline-flex items-center justify-center rounded-full bg-white p-3 mb-2 text-divine">
+                      <motion.div
+                        className="inline-flex items-center justify-center rounded-full bg-white p-3 mb-2 text-divine"
+                        whileHover={{ rotate: 10, scale: 1.1 }}
+                      >
                         <ministry.icon size={20} />
-                      </div>
+                      </motion.div>
                       <h3 className="text-xl font-semibold text-white">
                         {ministry.title}
                       </h3>
                     </div>
                   </div>
-                </div>
+                </motion.div>
                 <div className="p-4">
                   <p className="text-gray-600 mb-4">{ministry.desc}</p>
                   <Link
@@ -282,43 +414,68 @@ const Index = () => {
                     />
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Featured Sermons */}
-      <section className="section-padding bg-white">
+      <AnimatedSection className="section-padding bg-white">
         <div className="container-custom">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
-              <h2 className="text-divine mb-2">Featured Sermons</h2>
-              <p className="text-gray-600">
+              <AnimatedHeader>Featured Sermons</AnimatedHeader>
+              <motion.p
+                className="text-gray-600"
+                initial={{ opacity: 0 }}
+                animate={loaded ? { opacity: 1 } : {}}
+                transition={{ delay: 0.2 }}
+              >
                 Listen to our latest spirit-filled messages
-              </p>
+              </motion.p>
             </div>
-            <Link
+            <AnimatedButton
+              as={Link}
               to="/sermons"
               className="mt-4 md:mt-0 btn-secondary flex items-center gap-2"
             >
               <Play size={16} />
               View All Sermons
-            </Link>
+            </AnimatedButton>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            initial="hidden"
+            animate={loaded ? "visible" : "hidden"}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.15,
+                },
+              },
+            }}
+          >
             {featuredSermons.map((sermon) => (
-              <SermonCard key={sermon.id} {...sermon} />
+              <motion.div key={sermon.id} variants={cardAnimation}>
+                <SermonCard {...sermon} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Call to Action */}
-      <section className="py-20 divine-gradient text-white">
+      <AnimatedSection className="py-20 divine-gradient text-white">
         <div className="container-custom text-center">
-          <div className="max-w-3xl mx-auto">
+          <motion.div
+            className="max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
               Join Us This Sunday for a Divine Encounter
             </h2>
@@ -327,81 +484,122 @@ const Index = () => {
               receive life-changing messages from His Word.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
+              <AnimatedButton
+                as={Link}
                 to="/service-times"
                 className="btn-gold flex items-center justify-center gap-2"
               >
                 <Calendar size={18} />
                 Service Times
-              </Link>
-              <button
+              </AnimatedButton>
+              <AnimatedButton
                 onClick={openGoogleMaps}
-                className="bg-white text-divine hover:bg-gray-100 px-6 py-2.5 rounded-md transition-colors duration-300 flex items-center justify-center gap-2"
+                className="bg-white text-divine hover:bg-gray-100 px-6 py-2.5 rounded-md flex items-center justify-center gap-2"
               >
                 <MapPin size={18} />
                 Get Directions
-              </button>
+              </AnimatedButton>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Upcoming Events */}
-      <section className="section-padding bg-gray-50">
+      <AnimatedSection className="section-padding bg-gray-50">
         <div className="container-custom">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
-              <h2 className="text-divine mb-2">Upcoming Events</h2>
-              <p className="text-gray-600">Join us at our next gathering</p>
+              <AnimatedHeader>Upcoming Events</AnimatedHeader>
+              <motion.p
+                className="text-gray-600"
+                initial={{ opacity: 0 }}
+                animate={loaded ? { opacity: 1 } : {}}
+                transition={{ delay: 0.2 }}
+              >
+                Join us at our next gathering
+              </motion.p>
             </div>
-            <Link
+            <AnimatedButton
+              as={Link}
               to="/events"
               className="mt-4 md:mt-0 btn-secondary flex items-center gap-2"
             >
               <Calendar size={16} />
               View All Events
-            </Link>
+            </AnimatedButton>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            initial="hidden"
+            animate={loaded ? "visible" : "hidden"}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.15,
+                },
+              },
+            }}
+          >
             {upcomingEvents.map((event) => (
-              <EventCard key={event.id} {...event} />
+              <motion.div key={event.id} variants={cardAnimation}>
+                <EventCard {...event} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Blog Section */}
-      <section className="section-padding bg-white">
+      <AnimatedSection className="section-padding bg-white">
         <div className="container-custom">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
-              <h2 className="text-divine mb-2">
-                Latest Inspirational Articles
-              </h2>
-              <p className="text-gray-600">
+              <AnimatedHeader>Latest Inspirational Articles</AnimatedHeader>
+              <motion.p
+                className="text-gray-600"
+                initial={{ opacity: 0 }}
+                animate={loaded ? { opacity: 1 } : {}}
+                transition={{ delay: 0.2 }}
+              >
                 Spiritual insights to encourage your faith journey
-              </p>
+              </motion.p>
             </div>
-            <Link
+            <AnimatedButton
+              as={Link}
               to="/blog"
               className="mt-4 md:mt-0 btn-secondary flex items-center gap-2"
             >
               <Bookmark size={16} />
               Read Our Blog
-            </Link>
+            </AnimatedButton>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            initial="hidden"
+            animate={loaded ? "visible" : "hidden"}
+            variants={{
+              visible: {
+                transition: {
+                  staggerChildren: 0.15,
+                },
+              },
+            }}
+          >
             {latestPosts.map((post) => (
-              <BlogCard key={post.id} {...post} />
+              <motion.div key={post.id} variants={cardAnimation}>
+                <BlogCard {...post} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </section>
+      </AnimatedSection>
 
       {/* Newsletter Section */}
-      <Newsletter />
+      <AnimatedSection>
+        <Newsletter />
+      </AnimatedSection>
 
       {/* Footer */}
       <Footer />

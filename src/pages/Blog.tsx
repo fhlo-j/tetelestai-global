@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Search, Filter, Tag } from 'lucide-react';
 import Navbar from '../components/Navbar';
@@ -7,12 +6,10 @@ import Newsletter from '../components/Newsletter';
 import BlogCard from '../components/BlogCard';
 
 const Blog = () => {
-  // State for blogs and filters
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [filteredPosts, setFilteredPosts] = useState<any[]>([]);
 
-  // Sample blog data
   const posts = [
     {
       id: '1',
@@ -76,10 +73,8 @@ const Blog = () => {
     }
   ];
 
-  // Get unique categories for filtering
   const categories = [...new Set(posts.map(post => post.category))];
 
-  // Filter posts based on search and category filter
   useEffect(() => {
     let results = posts;
     
@@ -97,30 +92,34 @@ const Blog = () => {
     setFilteredPosts(results);
   }, [searchTerm, selectedCategory]);
 
-  // Reset all filters
   const resetFilters = () => {
     setSearchTerm("");
     setSelectedCategory("");
   };
 
-  // Featured post (first one marked as featured)
   const featuredPost = posts.find(post => post.featured);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
-      {/* Page Header */}
-      <div className="pt-24 pb-12 divine-gradient">
-        <div className="container-custom text-center">
+      <div className="pt-24 pb-12 relative">
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173" 
+            alt="Blog header background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+        <div className="container-custom text-center relative z-10">
           <h1 className="text-white mb-4">Blog</h1>
-          <p className="text-white/90 max-w-2xl mx-auto text-lg">
-            Spiritual insights, biblical teachings, and encouragement for your faith journey
+          <p className="text-white/90 max-w-2xl mx-auto">
+            Inspiring articles, devotionals, and spiritual insights from our team
           </p>
         </div>
       </div>
       
-      {/* Featured Post */}
       {featuredPost && (
         <section className="py-12 bg-divine-light">
           <div className="container-custom">
@@ -175,10 +174,8 @@ const Blog = () => {
         </section>
       )}
       
-      {/* Blog Posts Collection */}
       <section className="section-padding bg-white">
         <div className="container-custom">
-          {/* Search and Filters */}
           <div className="mb-8 bg-gray-50 p-6 rounded-lg">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1 relative">
@@ -214,7 +211,6 @@ const Blog = () => {
             </div>
           </div>
           
-          {/* Blog Grid */}
           <div>
             <div className="mb-6">
               <h2 className="text-2xl font-semibold text-divine">All Articles</h2>
@@ -246,7 +242,6 @@ const Blog = () => {
         </div>
       </section>
       
-      {/* Categories Section */}
       <section className="py-16 divine-light-gradient">
         <div className="container-custom">
           <div className="text-center max-w-3xl mx-auto mb-10">
@@ -280,10 +275,8 @@ const Blog = () => {
         </div>
       </section>
       
-      {/* Newsletter Section */}
       <Newsletter />
       
-      {/* Footer */}
       <Footer />
     </div>
   );
