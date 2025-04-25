@@ -41,11 +41,7 @@ const Navbar = () => {
     >
       <div className="container-custom flex items-center justify-between relative z-10">
         <Link to="/" className="flex items-center gap-2">
-          <img
-            src="https://res.cloudinary.com/dhgtx9k3d/image/upload/v1745539782/tetelestai_logo_1_vybw1t.jpg"
-            alt="Logo"
-            className="h-10"
-          />
+          <img src="/tetelestai_logo_1.jpg" alt="Logo" className="h-10" />
         </Link>
 
         {/* Desktop Navigation */}
