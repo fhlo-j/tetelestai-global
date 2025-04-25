@@ -41,20 +41,11 @@ const Navbar = () => {
     >
       <div className="container-custom flex items-center justify-between relative z-10">
         <Link to="/" className="flex items-center gap-2">
-          <span
-            className={`font-heading text-2xl font-bold ${
-              scrolled ? "text-divine" : "text-white"
-            }`}
-          >
-            Tetelestai
-          </span>
-          <span
-            className={`${
-              scrolled ? "text-gold" : "text-gold-light"
-            } font-heading text-lg`}
-          >
-            Global
-          </span>
+          <img
+            src="../../public/tetelestai logo 1.jpg"
+            alt="Logo"
+            className="h-10"
+          />
         </Link>
 
         {/* Desktop Navigation */}

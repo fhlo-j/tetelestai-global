@@ -227,28 +227,32 @@ const Index = () => {
       icon: Church,
       title: "Worship",
       desc: "Engaging the presence of God through anointed praise and worship.",
-      image: "https://images.unsplash.com/photo-1492321936769-b49830bc1d1e",
+      image:
+        "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=1746&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       id: "worship",
     },
     {
       icon: Book,
       title: "Teaching",
       desc: "In-depth biblical teaching that transforms lives and renews minds.",
-      image: "https://images.unsplash.com/photo-1551038247-3d9af20df552",
+      image:
+        "https://res.cloudinary.com/dhgtx9k3d/image/upload/v1745538347/WhatsApp_Image_2025-04-20_at_15.32.52_ff9b1caf_avsimp.jpg",
       id: "teaching",
     },
     {
       icon: Users,
       title: "Community",
       desc: "Building strong relationships and fostering spiritual growth.",
-      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+      image:
+        "https://res.cloudinary.com/dhgtx9k3d/image/upload/v1745538432/WhatsApp_Image_2025-04-21_at_02.12.14_fb875521_pmhzf8.jpg",
       id: "community",
     },
     {
       icon: Heart,
       title: "Outreach",
       desc: "Extending God's love through humanitarian efforts and evangelism.",
-      image: "https://images.unsplash.com/photo-1524230572899-a752b3835840",
+      image:
+        "https://images.unsplash.com/photo-1630557495198-45e230bbb192?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       id: "outreach",
     },
   ];
@@ -324,7 +328,7 @@ const Index = () => {
               className="relative rounded-lg overflow-hidden shadow-xl"
             >
               <img
-                src="https://images.unsplash.com/photo-1473177104440-ffee2f376098"
+                src="https://images.unsplash.com/photo-1611955966220-a65cb70eb34b?q=80&w=1886&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="Tetelestai Global Ministry"
                 className="w-full h-80 object-cover"
               />
