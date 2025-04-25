@@ -481,7 +481,7 @@ const Index = () => {
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Join Us This Sunday for a Divine Encounter
+              Join Us Every First Saturday Of The Month for a Divine Encounter
             </h2>
             <p className="text-white/90 text-lg mb-8">
               Experience the power of God's presence as we worship together and
