@@ -1,47 +1,54 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import GiveModal from "./GiveModal";
+import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { Menu, X } from 'lucide-react'
+import GiveModal from './GiveModal'
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
-        setScrolled(true);
+        setScrolled(true)
       } else {
-        setScrolled(false);
+        setScrolled(false)
       }
-    };
+    }
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll)
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+    setIsOpen(!isOpen)
+  }
 
   const isActiveRoute = (path: string) => {
-    return location.pathname === path;
-  };
+    return location.pathname === path
+  }
 
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white shadow-md py-3"
-          : "py-5 bg-black/10 backdrop-blur-sm"
+          ? 'bg-white shadow-md py-3'
+          : 'py-5 bg-black/10 backdrop-blur-sm'
       }`}
     >
       <div className="container-custom flex items-center justify-between relative z-10">
-        <Link to="/" className="flex items-center gap-2">
-          <img src="/tetelestai_logo_1.jpg" alt="Logo" className="h-10" />
+        <Link
+          to="/"
+          className="flex items-center gap-2"
+        >
+          <img
+            src="/tetelestai_logo_1.jpg"
+            alt="Logo"
+            className="h-10"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -50,14 +57,14 @@ const Navbar = () => {
             to="/"
             className={`px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
               scrolled
-                ? "text-gray-800 hover:text-divine"
-                : "text-white hover:text-gold-light"
+                ? 'text-gray-800 hover:text-divine'
+                : 'text-white hover:text-gold-light'
             } ${
-              isActiveRoute("/")
+              isActiveRoute('/')
                 ? scrolled
-                  ? "text-divine font-medium"
-                  : "text-gold-light font-medium"
-                : ""
+                  ? 'text-divine font-medium'
+                  : 'text-gold-light font-medium'
+                : ''
             }`}
           >
             Home
@@ -66,14 +73,14 @@ const Navbar = () => {
             to="/about"
             className={`px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
               scrolled
-                ? "text-gray-800 hover:text-divine"
-                : "text-white hover:text-gold-light"
+                ? 'text-gray-800 hover:text-divine'
+                : 'text-white hover:text-gold-light'
             } ${
-              isActiveRoute("/about")
+              isActiveRoute('/about')
                 ? scrolled
-                  ? "text-divine font-medium"
-                  : "text-gold-light font-medium"
-                : ""
+                  ? 'text-divine font-medium'
+                  : 'text-gold-light font-medium'
+                : ''
             }`}
           >
             About
@@ -82,14 +89,14 @@ const Navbar = () => {
             to="/sermons"
             className={`px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
               scrolled
-                ? "text-gray-800 hover:text-divine"
-                : "text-white hover:text-gold-light"
+                ? 'text-gray-800 hover:text-divine'
+                : 'text-white hover:text-gold-light'
             } ${
-              isActiveRoute("/sermons")
+              isActiveRoute('/sermons')
                 ? scrolled
-                  ? "text-divine font-medium"
-                  : "text-gold-light font-medium"
-                : ""
+                  ? 'text-divine font-medium'
+                  : 'text-gold-light font-medium'
+                : ''
             }`}
           >
             Sermons
@@ -98,14 +105,14 @@ const Navbar = () => {
             to="/events"
             className={`px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
               scrolled
-                ? "text-gray-800 hover:text-divine"
-                : "text-white hover:text-gold-light"
+                ? 'text-gray-800 hover:text-divine'
+                : 'text-white hover:text-gold-light'
             } ${
-              isActiveRoute("/events")
+              isActiveRoute('/events')
                 ? scrolled
-                  ? "text-divine font-medium"
-                  : "text-gold-light font-medium"
-                : ""
+                  ? 'text-divine font-medium'
+                  : 'text-gold-light font-medium'
+                : ''
             }`}
           >
             Events
@@ -114,46 +121,46 @@ const Navbar = () => {
             to="/gallery"
             className={`px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
               scrolled
-                ? "text-gray-800 hover:text-divine"
-                : "text-white hover:text-gold-light"
+                ? 'text-gray-800 hover:text-divine'
+                : 'text-white hover:text-gold-light'
             } ${
-              isActiveRoute("/gallery")
+              isActiveRoute('/gallery')
                 ? scrolled
-                  ? "text-divine font-medium"
-                  : "text-gold-light font-medium"
-                : ""
+                  ? 'text-divine font-medium'
+                  : 'text-gold-light font-medium'
+                : ''
             }`}
           >
             Gallery
           </Link>
-          <Link
+          {/* <Link
             to="/blog"
             className={`px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
               scrolled
-                ? "text-gray-800 hover:text-divine"
-                : "text-white hover:text-gold-light"
+                ? 'text-gray-800 hover:text-divine'
+                : 'text-white hover:text-gold-light'
             } ${
-              isActiveRoute("/blog")
+              isActiveRoute('/blog')
                 ? scrolled
-                  ? "text-divine font-medium"
-                  : "text-gold-light font-medium"
-                : ""
+                  ? 'text-divine font-medium'
+                  : 'text-gold-light font-medium'
+                : ''
             }`}
           >
             Blog
-          </Link>
+          </Link> */}
           <Link
             to="/service-times"
             className={`px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
               scrolled
-                ? "text-gray-800 hover:text-divine"
-                : "text-white hover:text-gold-light"
+                ? 'text-gray-800 hover:text-divine'
+                : 'text-white hover:text-gold-light'
             } ${
-              isActiveRoute("/service-times")
+              isActiveRoute('/service-times')
                 ? scrolled
-                  ? "text-divine font-medium"
-                  : "text-gold-light font-medium"
-                : ""
+                  ? 'text-divine font-medium'
+                  : 'text-gold-light font-medium'
+                : ''
             }`}
           >
             Services
@@ -162,14 +169,14 @@ const Navbar = () => {
             to="/contact"
             className={`px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
               scrolled
-                ? "text-gray-800 hover:text-divine"
-                : "text-white hover:text-gold-light"
+                ? 'text-gray-800 hover:text-divine'
+                : 'text-white hover:text-gold-light'
             } ${
-              isActiveRoute("/contact")
+              isActiveRoute('/contact')
                 ? scrolled
-                  ? "text-divine font-medium"
-                  : "text-gold-light font-medium"
-                : ""
+                  ? 'text-divine font-medium'
+                  : 'text-gold-light font-medium'
+                : ''
             }`}
           >
             Contact
@@ -181,7 +188,7 @@ const Navbar = () => {
         <button
           onClick={toggleMenu}
           className={`md:hidden fixed right-6 z-[60] ${
-            scrolled ? "text-divine" : isOpen ? "text-gray-800" : "text-white"
+            scrolled ? 'text-divine' : isOpen ? 'text-gray-800' : 'text-white'
           } hover:text-divine-dark transition-colors`}
           aria-label="Toggle menu"
         >
@@ -192,14 +199,14 @@ const Navbar = () => {
       {/* Mobile menu - updated with centered links and solid background */}
       <div
         className={`fixed inset-0 h-full w-full bg-white transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         } md:hidden z-50 pt-24`}
       >
         <div className="flex flex-col items-center justify-center h-full space-y-8">
           <Link
             to="/"
             className={`text-xl font-medium w-full text-center py-3 ${
-              isActiveRoute("/") ? "text-divine" : "text-gray-800"
+              isActiveRoute('/') ? 'text-divine' : 'text-gray-800'
             } hover:text-divine`}
             onClick={() => setIsOpen(false)}
           >
@@ -208,7 +215,7 @@ const Navbar = () => {
           <Link
             to="/about"
             className={`text-xl font-medium w-full text-center py-3 ${
-              isActiveRoute("/about") ? "text-divine" : "text-gray-800"
+              isActiveRoute('/about') ? 'text-divine' : 'text-gray-800'
             } hover:text-divine`}
             onClick={() => setIsOpen(false)}
           >
@@ -217,7 +224,7 @@ const Navbar = () => {
           <Link
             to="/sermons"
             className={`text-xl font-medium w-full text-center py-3 ${
-              isActiveRoute("/sermons") ? "text-divine" : "text-gray-800"
+              isActiveRoute('/sermons') ? 'text-divine' : 'text-gray-800'
             } hover:text-divine`}
             onClick={() => setIsOpen(false)}
           >
@@ -226,7 +233,7 @@ const Navbar = () => {
           <Link
             to="/events"
             className={`text-xl font-medium w-full text-center py-3 ${
-              isActiveRoute("/events") ? "text-divine" : "text-gray-800"
+              isActiveRoute('/events') ? 'text-divine' : 'text-gray-800'
             } hover:text-divine`}
             onClick={() => setIsOpen(false)}
           >
@@ -235,7 +242,7 @@ const Navbar = () => {
           <Link
             to="/gallery"
             className={`text-xl font-medium w-full text-center py-3 ${
-              isActiveRoute("/gallery") ? "text-divine" : "text-gray-800"
+              isActiveRoute('/gallery') ? 'text-divine' : 'text-gray-800'
             } hover:text-divine`}
             onClick={() => setIsOpen(false)}
           >
@@ -244,7 +251,7 @@ const Navbar = () => {
           <Link
             to="/blog"
             className={`text-xl font-medium w-full text-center py-3 ${
-              isActiveRoute("/blog") ? "text-divine" : "text-gray-800"
+              isActiveRoute('/blog') ? 'text-divine' : 'text-gray-800'
             } hover:text-divine`}
             onClick={() => setIsOpen(false)}
           >
@@ -253,7 +260,7 @@ const Navbar = () => {
           <Link
             to="/service-times"
             className={`text-xl font-medium w-full text-center py-3 ${
-              isActiveRoute("/service-times") ? "text-divine" : "text-gray-800"
+              isActiveRoute('/service-times') ? 'text-divine' : 'text-gray-800'
             } hover:text-divine`}
             onClick={() => setIsOpen(false)}
           >
@@ -262,7 +269,7 @@ const Navbar = () => {
           <Link
             to="/contact"
             className={`text-xl font-medium w-full text-center py-3 ${
-              isActiveRoute("/contact") ? "text-divine" : "text-gray-800"
+              isActiveRoute('/contact') ? 'text-divine' : 'text-gray-800'
             } hover:text-divine`}
             onClick={() => setIsOpen(false)}
           >
@@ -274,7 +281,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

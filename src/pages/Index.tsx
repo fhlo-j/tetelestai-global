@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import {
   ChevronRight,
   Play,
@@ -11,27 +11,31 @@ import {
   Users,
   Bookmark,
   MapPin,
-} from "lucide-react";
+} from 'lucide-react'
 
-import Hero from "../components/Hero";
-import Navbar from "../components/Navbar";
-import SermonCard from "../components/SermonCard";
-import EventCard from "../components/EventCard";
-import BlogCard from "../components/BlogCard";
-import Newsletter from "../components/Newsletter";
-import Footer from "../components/Footer";
-import AnnouncementModal from "../components/AnnouncementModal";
+import Hero from '../components/Hero'
+import Navbar from '../components/Navbar'
+import SermonCard from '../components/SermonCard'
+import EventCard from '../components/EventCard'
+import BlogCard from '../components/BlogCard'
+import Newsletter from '../components/Newsletter'
+import Footer from '../components/Footer'
+import AnnouncementModal from '../components/AnnouncementModal'
+import { fetchMinistries } from '@/hooks/useMinistries'
+import { useQuery } from '@tanstack/react-query'
+import { fetchEvents, fetchUpcomingEvents } from '@/services/apiUser'
+import { fetchFeaturedSermons } from '@/services/apiSermons'
 
 // Reusable Animated Section Component
-const AnimatedSection = ({ children, className = "" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+const AnimatedSection = ({ children, className = '' }) => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
 
   return (
     <motion.div
       ref={ref}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      animate={isInView ? 'visible' : 'hidden'}
       variants={{
         hidden: { opacity: 0, y: 30 },
         visible: {
@@ -39,7 +43,7 @@ const AnimatedSection = ({ children, className = "" }) => {
           y: 0,
           transition: {
             duration: 0.6,
-            ease: "easeOut",
+            ease: 'easeOut',
           },
         },
       }}
@@ -47,16 +51,16 @@ const AnimatedSection = ({ children, className = "" }) => {
     >
       {children}
     </motion.div>
-  );
-};
+  )
+}
 
 // Animated Header Component
-const AnimatedHeader = ({ children, className = "" }) => (
+const AnimatedHeader = ({ children, className = '' }) => (
   <motion.div
     className={`inline-block relative ${className}`}
     initial="hidden"
     whileInView="visible"
-    viewport={{ once: true, margin: "-50px" }}
+    viewport={{ once: true, margin: '-50px' }}
     variants={{
       hidden: { opacity: 0, y: 20 },
       visible: {
@@ -64,7 +68,7 @@ const AnimatedHeader = ({ children, className = "" }) => (
         y: 0,
         transition: {
           duration: 0.6,
-          ease: "easeOut",
+          ease: 'easeOut',
         },
       },
     }}
@@ -77,33 +81,33 @@ const AnimatedHeader = ({ children, className = "" }) => (
       transition={{
         duration: 0.8,
         delay: 0.3,
-        ease: "easeOut",
+        ease: 'easeOut',
       }}
       className="absolute bottom-0 left-0 w-full h-1 bg-gold origin-left"
-      style={{ transformOrigin: "left" }}
+      style={{ transformOrigin: 'left' }}
     />
   </motion.div>
-);
+)
 
 // Animated Button Component
-const AnimatedButton = ({ children, className = "", ...props }) => (
+const AnimatedButton = ({ children, className = '', ...props }) => (
   <motion.button
     whileHover={{ scale: 1.03 }}
     whileTap={{ scale: 0.98 }}
-    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+    transition={{ type: 'spring', stiffness: 400, damping: 10 }}
     className={className}
     {...props}
   >
     {children}
   </motion.button>
-);
+)
 
 const Index = () => {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    setLoaded(true);
-  }, []);
+    setLoaded(true)
+  }, [])
 
   // Animation variants with compatible easing
   const fadeIn = {
@@ -113,10 +117,10 @@ const Index = () => {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: 'easeOut',
       },
     },
-  };
+  }
 
   const staggerContainer = {
     hidden: { opacity: 0 },
@@ -124,10 +128,10 @@ const Index = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
-        ease: "easeOut",
+        ease: 'easeOut',
       },
     },
-  };
+  }
 
   const cardAnimation = {
     hidden: { opacity: 0, y: 30 },
@@ -136,133 +140,71 @@ const Index = () => {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: "easeOut",
+        ease: 'easeOut',
       },
     },
-  };
+  }
 
-  // Sample data
-  const featuredSermons = [
-    {
-      id: "1",
-      title: "The Power of Divine Purpose",
-      speaker: "Pastor Emmanuel Johnson",
-      date: "June 12, 2024",
-      duration: "45 min",
-      imageUrl: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05",
-      featured: true,
-      type: "video" as const,
-      url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    },
-    {
-      id: "2",
-      title: "Embracing God's Grace in Challenging Times",
-      speaker: "Pastor Sarah Williams",
-      date: "June 5, 2024",
-      duration: "38 min",
-      imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-      featured: false,
-      type: "audio" as const,
-      url: "https://soundbible.com/mp3/church-chime-daniel_simon.mp3",
-    },
-    {
-      id: "3",
-      title: "Finding Rest in God's Presence",
-      speaker: "Elder David Thompson",
-      date: "May 29, 2024",
-      duration: "42 min",
-      imageUrl: "https://images.unsplash.com/photo-1473177104440-ffee2f376098",
-      featured: false,
-      type: "audio" as const,
-      url: "https://soundbible.com/mp3/church-chime-daniel_simon.mp3",
-    },
-  ];
-
-  const upcomingEvents = [
-    {
-      id: "1",
-      title: "Annual Worship Conference 2024",
-      date: "July 15-17, 2024",
-      time: "9:00 AM - 5:00 PM",
-      location: "Main Sanctuary",
-      imageUrl: "https://images.unsplash.com/photo-1492321936769-b49830bc1d1e",
-      featured: true,
-    },
-    {
-      id: "2",
-      title: "Youth Revival Weekend",
-      date: "June 24-25, 2024",
-      time: "6:00 PM - 9:00 PM",
-      location: "Youth Center",
-      imageUrl: "https://images.unsplash.com/photo-1500673922987-e212871fec22",
-      featured: false,
-    },
-  ];
+  // Sample data (can be replaced by fetched data later if needed)
+  // In your homepage component
+  const {
+    data: featuredSermons = [],
+    error: sermonsError,
+    isLoading: isSermonsLoading,
+  } = useQuery({
+    queryKey: ['featured-sermons'],
+    queryFn: fetchFeaturedSermons,
+  })
 
   const latestPosts = [
     {
-      id: "1",
-      title: "Finding Your Purpose in Christ",
+      id: '1',
+      title: 'Finding Your Purpose in Christ',
       excerpt:
         "Discover how to align your life with God's unique purpose for you and fulfill your divine destiny.",
-      author: "Pastor Emmanuel Johnson",
-      date: "June 10, 2024",
-      imageUrl: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05",
+      author: 'Pastor Emmanuel Johnson',
+      date: 'June 10, 2024',
+      imageUrl: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05',
       featured: true,
     },
     {
-      id: "2",
-      title: "5 Biblical Principles for Spiritual Growth",
+      id: '2',
+      title: '5 Biblical Principles for Spiritual Growth',
       excerpt:
-        "Learn practical steps from scripture to deepen your relationship with God and grow spiritually.",
-      author: "Minister Rebecca Adams",
-      date: "June 3, 2024",
-      imageUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+        'Learn practical steps from scripture to deepen your relationship with God and grow spiritually.',
+      author: 'Minister Rebecca Adams',
+      date: 'June 3, 2024',
+      imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
       featured: false,
     },
-  ];
+  ]
 
-  const ministries = [
-    {
-      icon: Church,
-      title: "Worship",
-      desc: "Engaging the presence of God through anointed praise and worship.",
-      image:
-        "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=1746&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      id: "worship",
-    },
-    {
-      icon: Book,
-      title: "Teaching",
-      desc: "In-depth biblical teaching that transforms lives and renews minds.",
-      image:
-        "https://res.cloudinary.com/dhgtx9k3d/image/upload/v1745538347/WhatsApp_Image_2025-04-20_at_15.32.52_ff9b1caf_avsimp.jpg",
-      id: "teaching",
-    },
-    {
-      icon: Users,
-      title: "Community",
-      desc: "Building strong relationships and fostering spiritual growth.",
-      image:
-        "https://res.cloudinary.com/dhgtx9k3d/image/upload/v1745538432/WhatsApp_Image_2025-04-21_at_02.12.14_fb875521_pmhzf8.jpg",
-      id: "community",
-    },
-    {
-      icon: Heart,
-      title: "Outreach",
-      desc: "Extending God's love through humanitarian efforts and evangelism.",
-      image:
-        "https://images.unsplash.com/photo-1630557495198-45e230bbb192?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      id: "outreach",
-    },
-  ];
+  const { data: ministries = [], error: ministriesError } = useQuery({
+    queryKey: ['ministries'], // Check this key, usually 'ministries' or similar
+    queryFn: fetchMinistries,
+  })
+
+  const {
+    data: upcomingEvents,
+    isLoading: eventsLoading,
+    isError: eventsError,
+    error: eventsFetchError, // Renamed 'error' to avoid conflict with 'ministriesError'
+  } = useQuery({
+    queryKey: ['upcomingEvents'],
+    queryFn: fetchUpcomingEvents,
+  })
+
+  const { data: events } = useQuery({
+    queryKey: ['events'],
+    queryFn: fetchEvents,
+  })
 
   const openGoogleMaps = () => {
     window.open(
-      "https://maps.google.com/?q=123+Faith+Avenue,+City+Center",
-      "_blank"
-    );
-  };
+      'https://maps.google.com/?q=123+Faith+Avenue,+City+Center',
+      '_blank'
+    )
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -274,7 +216,7 @@ const Index = () => {
         animate={loaded ? { opacity: 1, y: 0 } : {}}
         transition={{
           duration: 1,
-          ease: "easeOut",
+          ease: 'easeOut',
         }}
       >
         <Hero />
@@ -288,7 +230,7 @@ const Index = () => {
           <motion.div
             className="grid md:grid-cols-2 gap-8 items-center"
             initial="hidden"
-            animate={loaded ? "visible" : "hidden"}
+            animate={loaded ? 'visible' : 'hidden'}
             variants={staggerContainer}
           >
             <motion.div variants={fadeIn}>
@@ -323,7 +265,7 @@ const Index = () => {
               animate={loaded ? { opacity: 1, scale: 1 } : {}}
               transition={{
                 duration: 0.8,
-                ease: "easeOut",
+                ease: 'easeOut',
               }}
               className="relative rounded-lg overflow-hidden shadow-xl"
             >
@@ -364,7 +306,7 @@ const Index = () => {
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
             initial="hidden"
-            animate={loaded ? "visible" : "hidden"}
+            animate={loaded ? 'visible' : 'hidden'}
             variants={{
               visible: {
                 transition: {
@@ -373,53 +315,72 @@ const Index = () => {
               },
             }}
           >
-            {ministries.map((ministry, index) => (
-              <motion.div
-                key={index}
-                className="bg-white rounded-lg shadow-md overflow-hidden group"
-                variants={cardAnimation}
-                whileHover={{ y: -10 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
+            {/* Conditional check for ministries data */}
+            {ministriesError ? (
+              <div className="col-span-full text-center text-red-600">
+                Error loading ministries.
+              </div>
+            ) : ministries.length === 0 ? (
+              <div className="col-span-full text-center text-gray-500">
+                No ministries available at the moment.
+              </div>
+            ) : (
+              ministries.map((ministry, index) => (
                 <motion.div
-                  className="h-48 overflow-hidden relative"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.4 }}
+                  key={ministry.id || index} // Use ministry.id if available, fallback to index
+                  className="bg-white rounded-lg shadow-md overflow-hidden group"
+                  variants={cardAnimation}
+                  whileHover={{ y: -10 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
                 >
-                  <img
-                    src={ministry.image}
-                    alt={ministry.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                    <div className="p-4">
-                      <motion.div
-                        className="inline-flex items-center justify-center rounded-full bg-white p-3 mb-2 text-divine"
-                        whileHover={{ rotate: 10, scale: 1.1 }}
-                      >
-                        <ministry.icon size={20} />
-                      </motion.div>
-                      <h3 className="text-xl font-semibold text-white">
-                        {ministry.title}
-                      </h3>
+                  <motion.div
+                    className="h-48 overflow-hidden relative"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <img
+                      src={ministry.imageUrl}
+                      alt={ministry.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                      <div className="p-4">
+                        <motion.div
+                          className="inline-flex items-center justify-center rounded-full bg-white p-3 mb-2 text-divine"
+                          whileHover={{ rotate: 10, scale: 1.1 }}
+                          transition={{
+                            type: 'spring',
+                            stiffness: 400,
+                            damping: 10,
+                          }}
+                        >
+                          {/* You need to pass the actual icon component here, e.g., <Church size={20} /> */}
+                          {/* If ministry.icon is a string representing a component name, you'd need a mapping */}
+                          {/* For now, a placeholder icon or remove if not dynamically handled */}
+                          <Church size={20} />
+                        </motion.div>
+                        <h3 className="text-xl font-semibold text-white">
+                          {ministry.title}
+                        </h3>
+                      </div>
                     </div>
+                  </motion.div>
+                  <div className="p-4">
+                    <p className="text-gray-600 mb-4">{ministry.desc}</p>
+                    <Link
+                      to={`/ministry/${ministry.id}`}
+                      className="text-divine hover:text-divine-dark font-medium text-sm inline-flex items-center group"
+                    >
+                      Learn More
+                      <ChevronRight
+                        size={16}
+                        className="ml-1 transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </Link>
                   </div>
                 </motion.div>
-                <div className="p-4">
-                  <p className="text-gray-600 mb-4">{ministry.desc}</p>
-                  <Link
-                    to={`/ministry/${ministry.id}`}
-                    className="text-divine hover:text-divine-dark font-medium text-sm inline-flex items-center group"
-                  >
-                    Learn More
-                    <ChevronRight
-                      size={16}
-                      className="ml-1 transition-transform duration-300 group-hover:translate-x-1"
-                    />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
+              ))
+            )}
           </motion.div>
         </div>
       </AnimatedSection>
@@ -452,7 +413,7 @@ const Index = () => {
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             initial="hidden"
-            animate={loaded ? "visible" : "hidden"}
+            animate={loaded ? 'visible' : 'hidden'}
             variants={{
               visible: {
                 transition: {
@@ -462,7 +423,10 @@ const Index = () => {
             }}
           >
             {featuredSermons.map((sermon) => (
-              <motion.div key={sermon.id} variants={cardAnimation}>
+              <motion.div
+                key={sermon.id}
+                variants={cardAnimation}
+              >
                 <SermonCard {...sermon} />
               </motion.div>
             ))}
@@ -523,20 +487,22 @@ const Index = () => {
                 Join us at our next gathering
               </motion.p>
             </div>
-            <AnimatedButton
-              as={Link}
-              to="/events"
-              className="mt-4 md:mt-0 btn-secondary flex items-center gap-2"
-            >
-              <Calendar size={16} />
-              View All Events
-            </AnimatedButton>
+            <Link to="/events">
+              <AnimatedButton
+                as={Link}
+                to="/events"
+                className="mt-4 md:mt-0 btn-secondary flex items-center gap-2"
+              >
+                <Calendar size={16} />
+                View All Events
+              </AnimatedButton>
+            </Link>
           </div>
 
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
             initial="hidden"
-            animate={loaded ? "visible" : "hidden"}
+            animate={loaded ? 'visible' : 'hidden'}
             variants={{
               visible: {
                 transition: {
@@ -545,17 +511,49 @@ const Index = () => {
               },
             }}
           >
-            {upcomingEvents.map((event) => (
-              <motion.div key={event.id} variants={cardAnimation}>
-                <EventCard {...event} />
-              </motion.div>
-            ))}
+            {/* --- FIX IS HERE --- */}
+            {eventsLoading ? (
+              <div className="col-span-full text-center text-gray-500">
+                Loading upcoming events...
+              </div>
+            ) : eventsError ? (
+              <div className="col-span-full text-center text-red-600">
+                Error loading events: {eventsFetchError?.message}
+              </div>
+            ) : !upcomingEvents || upcomingEvents.length === 0 ? (
+              <div className="col-span-full text-center py-12">
+                <div className="inline-flex flex-col items-center justify-center text-gray-500 max-w-md mx-auto">
+                  <Calendar
+                    className="mb-4"
+                    size={40}
+                    strokeWidth={1.2}
+                  />
+                  <h3 className="text-lg font-semibold mb-2">
+                    No Upcoming Events
+                  </h3>
+                  <p className="text-sm">
+                    We're currently preparing our next gathering. Please check
+                    back soon or explore past events.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              events.map((event) => (
+                <motion.div
+                  key={event._id}
+                  variants={cardAnimation}
+                >
+                  <EventCard {...event} />
+                </motion.div>
+              ))
+            )}
+            {/* --- END FIX --- */}
           </motion.div>
         </div>
       </AnimatedSection>
 
       {/* Blog Section */}
-      <AnimatedSection className="section-padding bg-white">
+      {/* <AnimatedSection className="section-padding bg-white">
         <div className="container-custom">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div>
@@ -582,7 +580,7 @@ const Index = () => {
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
             initial="hidden"
-            animate={loaded ? "visible" : "hidden"}
+            animate={loaded ? 'visible' : 'hidden'}
             variants={{
               visible: {
                 transition: {
@@ -592,23 +590,26 @@ const Index = () => {
             }}
           >
             {latestPosts.map((post) => (
-              <motion.div key={post.id} variants={cardAnimation}>
+              <motion.div
+                key={post.id}
+                variants={cardAnimation}
+              >
                 <BlogCard {...post} />
               </motion.div>
             ))}
           </motion.div>
         </div>
-      </AnimatedSection>
+      </AnimatedSection> */}
 
       {/* Newsletter Section */}
-      <AnimatedSection>
+      {/* <AnimatedSection>
         <Newsletter />
-      </AnimatedSection>
+      </AnimatedSection> */}
 
       {/* Footer */}
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index
