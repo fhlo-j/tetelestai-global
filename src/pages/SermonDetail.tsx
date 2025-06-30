@@ -16,6 +16,7 @@ import { useQuery } from '@tanstack/react-query'
 import { usePostComment } from '@/hooks/useSermons'
 import Loader from '../components/ui/Loader'
 import { formatDate } from '@/utils/dateFormatter'
+import SpinnerLoader from '../components/ui/Loader'
 
 const SermonDetail = () => {
   const { id } = useParams()
@@ -74,12 +75,7 @@ const SermonDetail = () => {
   if (isSermonsLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader
-          text="REACT*BITS*COMPONENTS*"
-          onHover="speedUp"
-          spinDuration={20}
-          className="custom-class"
-        />
+        <SpinnerLoader />
       </div>
     )
   }
