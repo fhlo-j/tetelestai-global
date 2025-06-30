@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from '@/hooks/use-toast'
 
 const Login = () => {
   const [password, setPassword] = useState('')
@@ -7,11 +8,15 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault()
-    if (password === 'admin123') {
+    if (password === '@tetelestaiAdminMain') {
       localStorage.setItem('adminAuth', 'true')
       navigate('/admin')
     } else {
-      alert('Incorrect password')
+      toast({
+        title: 'Validation Error',
+        description: 'Incorrect password. Please try again.',
+        variant: 'destructive',
+      })
     }
   }
 
